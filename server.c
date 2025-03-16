@@ -70,11 +70,14 @@ void run_service(int server_fd) {
         int client_fd = accept_connection(server_fd);
         if (client_fd == -1) continue;
 
+        printf("Connection established\n");
+
         pid_t pid = fork();
         if (pid == 0) {
             // Child process
             close(server_fd);  // Child doesn't need to accept new connections
             handle_request(client_fd);
+            printf("Connection closed\n");
             close(client_fd);
             exit(0);
         } else if (pid > 0) {
